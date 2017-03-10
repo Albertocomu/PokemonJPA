@@ -45,9 +45,9 @@ public class Entrenador extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             String name = request.getParameter("name");
-            int pokeballs = request.getIntHeader("pokeballs");
-            int potions = request.getIntHeader("potions");
-            int points = request.getIntHeader("points");
+            int pokeballs = Integer.parseInt(request.getParameter("pokeballs"));
+            int potions = Integer.parseInt(request.getParameter("potions"));
+            int points = Integer.parseInt(request.getParameter("points"));
             Trainer t = new Trainer(name, pokeballs, potions, points);
             if(myBean.insertTrainer(t)){
                 out.println("Entrenador dado de alta.");
@@ -58,7 +58,6 @@ public class Entrenador extends HttpServlet {
             out.println("</html>");
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -97,5 +96,4 @@ public class Entrenador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
