@@ -24,6 +24,10 @@ public class Pokemon extends HttpServlet {
 
     @EJB
     PBean myBean;
+
+    private Pokemon(String name, String type, String ability, int attack, int defense, int speed, int life, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,8 +57,10 @@ public class Pokemon extends HttpServlet {
             int life = Integer.parseInt(request.getParameter("life"));
             String trainer = request.getParameter("trainer");
             Pokemon p = new Pokemon(name, type, ability, attack, defense, speed, life, 0);
-            //TODO
-            if(myBean.insertTrainer(t)){
+            boolean cTrainer = checkTrainerPokemons(trainer);
+            
+            
+            if(myBean.insertTrainer(p)){
                 out.println("Pokemon dado de alta.");
             }else{
                 out.println("Error, ya hay un pokemon con ese nombre.");
@@ -64,6 +70,16 @@ public class Pokemon extends HttpServlet {
         }
     }
 
+    public Boolean checkTrainerPokemons(String trainer){
+        boolean eTrainer = myBean.existsTrainerName(trainer);
+        if (!myBean.existsTrainerName(trainer)){
+            
+        }else{
+            System.out.println("Error checking Pokemons, trainer not found.");
+        }
+        Trainer t = new Trainer();
+        return true;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
