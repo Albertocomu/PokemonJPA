@@ -7,6 +7,7 @@ package beans;
 
 import entities.Pokemon;
 import entities.Trainer;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -60,10 +61,32 @@ public class PBean {
         }
     }
     
+    public Trainer obtainTrainer(String name){
+        return (Trainer) emf.createEntityManager().createNamedQuery("Trainer.findByName").setParameter("name", name).getSingleResult();
+    }
+    
     public boolean existsTrainer(Trainer t){
         EntityManager em = emf.createEntityManager();
         Trainer finded = em.find(Trainer.class, t.getName());
         em.close();
         return finded != null;
+    }
+    
+    public boolean existsTrainerName(String trainer){
+        EntityManager em = emf.createEntityManager();
+        Trainer finded = em.find(Trainer.class, trainer);
+        em.close();
+        return finded != null;
+    }
+    
+    public List<Trainer> selectTrainersWithPokemons(){
+        List<Trainer> trainers = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
+        List<Trainer> validTrainers = new ArrayList<>();
+        for(Trainer t : trainers){
+            if(t.getPokemonCollection().size()<6){
+                validTrainers.add(t);
+            }
+        }
+        return validTrainers;
     }
 }

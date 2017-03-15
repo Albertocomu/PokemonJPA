@@ -6,8 +6,10 @@
 package servlets;
 
 import beans.PBean;
+import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,15 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sergiodiaz
  */
-@WebServlet(name = "Pokemon", urlPatterns = {"/Pokemon"})
-public class Pokemon extends HttpServlet {
+@WebServlet(name = "CreatePokemon", urlPatterns = {"/CreatePokemon"})
+public class CreatePokemon extends HttpServlet {
 
     @EJB
     PBean myBean;
-
-    private Pokemon(String name, String type, String ability, int attack, int defense, int speed, int life, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,41 +44,35 @@ public class Pokemon extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Pokemon</title>");            
+            out.println("<title>Servlet CreatePokemon</title>");            
             out.println("</head>");
             out.println("<body>");
-            String name = request.getParameter("name");
-            String type = request.getParameter("type");
-            String ability = request.getParameter("ability");
-            int attack = Integer.parseInt(request.getParameter("attack"));
-            int defense = Integer.parseInt(request.getParameter("defense"));
-            int speed = Integer.parseInt(request.getParameter("speed"));
-            int life = Integer.parseInt(request.getParameter("life"));
-            String trainer = request.getParameter("trainer");
-            Pokemon p = new Pokemon(name, type, ability, attack, defense, speed, life, 0);
-            boolean cTrainer = checkTrainerPokemons(trainer);
-            
-            
-            if(myBean.insertTrainer(p)){
-                out.println("Pokemon dado de alta.");
-            }else{
-                out.println("Error, ya hay un pokemon con ese nombre.");
+            out.println("<h1>Create Pokemon</h1>");
+            out.println("<form action=\"Pokemon\" method =\"GET\">");
+            out.println("Nombre: <input type=\"text\" name=\"name\">");
+            out.println("Tipo: <input type=\"text\" name=\"type\">");
+            out.println("Habilidad: <input type=\"text\" name=\"ability\">");
+            out.println("Ataque: <input type=\"number\" name=\"attack\">");
+            out.println("Defensa: <input type=\"number\" name=\"defense\">");
+            out.println("Rapidez: <input type=\"number\" name=\"speed\">");
+            out.println("Salud: <input type=\"number\" name=\"life\">");
+            out.println("Entrenador: <select name=\"trainer\">");
+            try{
+                List<Trainer> trainers = myBean.selectTrainersWithPokemons();
+                for(Trainer t : trainers){
+                    out.println("<option value="+t.getName()+">"+t.getName()+"</option>");
+                }
+            }catch(Exception error){
+                error.printStackTrace();
             }
+            out.println("</select>");
+            out.println("<input type=\"submit\" value=\"Create\">");
+            out.println("</form>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    public Boolean checkTrainerPokemons(String trainer){
-        boolean eTrainer = myBean.existsTrainerName(trainer);
-        if (!myBean.existsTrainerName(trainer)){
-            
-        }else{
-            System.out.println("Error checking Pokemons, trainer not found.");
-        }
-        Trainer t = new Trainer();
-        return true;
-    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
