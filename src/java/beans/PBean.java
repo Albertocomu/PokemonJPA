@@ -34,9 +34,11 @@ public class PBean {
             em.persist(p);
             em.close();
             return true;
-        }else{
-            return false;
-        }
+        }else{return false;}
+    }
+    
+    public Pokemon obtainPokemon(String name){
+        return (Pokemon) emf.createEntityManager().createNamedQuery("Pokemon.findByName").setParameter("name", name).getSingleResult();
     }
     
     public boolean existsPokemon(Pokemon p){
@@ -46,6 +48,15 @@ public class PBean {
         return finded != null;
     }
     
+    public boolean deletePokemon(String name){
+        Pokemon p = obtainPokemon(name);
+        EntityManager em = emf.createEntityManager();
+        Pokemon chosed = em.find(Pokemon.class, p.getName());
+        if(existsPokemon(chosed)){
+            em.remove(chosed); em.close(); return true;
+        }else{return false;}
+    }
+    
     public List<Trainer> selectAllTrainers(){
         return emf.createEntityManager().createNamedQuery("Pokemon.findAll").getResultList();
     }
@@ -53,12 +64,8 @@ public class PBean {
     public boolean insertTrainer(Trainer t){
         if(!existsTrainer(t)){
             EntityManager em = emf.createEntityManager();
-            em.persist(t);
-            em.close();
-            return true;
-        }else{
-            return false;
-        }
+            em.persist(t); em.close(); return true;
+        }else{return false;}
     }
     
     public Trainer obtainTrainer(String name){

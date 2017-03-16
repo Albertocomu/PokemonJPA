@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author DAM
  */
-public class Entrenador extends HttpServlet {
+public class CreateTrainer extends HttpServlet {
     
     @EJB
     PBean myBean;

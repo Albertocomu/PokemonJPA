@@ -7,7 +7,6 @@ package servlets;
 
 import beans.PBean;
 import entities.Pokemon;
-import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -21,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sergiodiaz
  */
-@WebServlet(name = "PokemonForm", urlPatterns = {"/Pokemon"})
-public class PokemonForm extends HttpServlet {
+@WebServlet(name = "DeletePokemon", urlPatterns = {"/DeletePokemon"})
+public class DeletePokemon extends HttpServlet {
 
     @EJB
     PBean myBean;
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,30 +43,23 @@ public class PokemonForm extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Pokemon</title>");            
+            out.println("<title>Eliminar Pokemon</title>");            
             out.println("</head>");
             out.println("<body>");
-            String name = request.getParameter("name");
-            String type = request.getParameter("type");
-            String ability = request.getParameter("ability");
-            int attack = Integer.parseInt(request.getParameter("attack"));
-            int defense = Integer.parseInt(request.getParameter("defense"));
-            int speed = Integer.parseInt(request.getParameter("speed"));
-            int life = Integer.parseInt(request.getParameter("life"));
-            String trainer = request.getParameter("trainer");
-            Pokemon p = new Pokemon(name, type, ability, attack, defense, speed, life, 0);
-            Trainer t = myBean.obtainTrainer(trainer);
-            p.setTrainer(t);
-            if(myBean.insertPokemon(p)){
-                out.println("Pokemon dado de alta.");
-            }else{
-                out.println("Error, ya hay un pokemon con ese nombre.");
+            out.println("<h1>Eliminando Pokemon...</h1>");
+            if (request.getParameter("name") != null){
+                String name = request.getParameter("name");
+                Pokemon p = new Pokemon(name);
+                if(myBean.existsPokemon(p)){
+                    if(myBean.deletePokemon(name)){out.println("Pokemon eliminado.");}
+                    else{out.println("No pudimos eliminar el pokemon, lo sentimos.");}
+                }else{out.println("No pudimos eliminar el pokemon, lo sentimos.");}
             }
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

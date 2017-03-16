@@ -7,9 +7,9 @@ package servlets;
 
 import beans.PBean;
 import entities.Pokemon;
-import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sergiodiaz
  */
-@WebServlet(name = "PokemonForm", urlPatterns = {"/Pokemon"})
-public class PokemonForm extends HttpServlet {
+@WebServlet(name = "PokemonList", urlPatterns = {"/PokemonList"})
+public class PokemonList extends HttpServlet {
 
     @EJB
     PBean myBean;
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,30 +44,33 @@ public class PokemonForm extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Pokemon</title>");            
+            out.println("<title>Servlet PokemonList</title>");            
             out.println("</head>");
             out.println("<body>");
-            String name = request.getParameter("name");
-            String type = request.getParameter("type");
-            String ability = request.getParameter("ability");
-            int attack = Integer.parseInt(request.getParameter("attack"));
-            int defense = Integer.parseInt(request.getParameter("defense"));
-            int speed = Integer.parseInt(request.getParameter("speed"));
-            int life = Integer.parseInt(request.getParameter("life"));
-            String trainer = request.getParameter("trainer");
-            Pokemon p = new Pokemon(name, type, ability, attack, defense, speed, life, 0);
-            Trainer t = myBean.obtainTrainer(trainer);
-            p.setTrainer(t);
-            if(myBean.insertPokemon(p)){
-                out.println("Pokemon dado de alta.");
-            }else{
-                out.println("Error, ya hay un pokemon con ese nombre.");
+            out.println("<h1>Servlet PokemonList at " + request.getContextPath() + "</h1>");
+            List<Pokemon> pokemons = myBean.selectAllPokemons();
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<th>Pokemon</th>");
+            out.println("<th>Entrenador</th>");
+            out.println("<th>Acción</th>");
+            out.println("</tr>");
+            for(Pokemon p : pokemons){
+                out.println("<form action=\"DeletePokemon\" method=\"GET\">");
+                out.println("<tr>");
+                out.println("<td>"+p.getName()+", Nivel "+p.getLevel()+"</td>");
+                out.println("<td>"+p.getTrainer().getName()+"</td>");
+                out.println("<td><input type=\"submit\" value=\"Eliminar\">");
+                out.println("<input type=\"hidden\" name=\"name\" value=\""+p.getName()+"\"></td>");
+                out.println("</tr>");
+                out.println("</form>");
             }
+            out.println("</table>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
