@@ -9,18 +9,19 @@ import beans.PBean;
 import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author DAM
- */
-public class CreateTrainer extends HttpServlet {
-    
+@WebServlet(name = "TrainerList", urlPatterns = {"/TrainerList"})
+public class TrainerList extends HttpServlet {
+
     @EJB
     PBean myBean;
     
@@ -41,24 +42,29 @@ public class CreateTrainer extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Alta Entrenador</title>");            
+            out.println("<title>Ranking Entrenadores</title>");            
             out.println("</head>");
             out.println("<body>");
-            String name = request.getParameter("name");
-            int pokeballs = Integer.parseInt(request.getParameter("pokeballs"));
-            int potions = Integer.parseInt(request.getParameter("potions"));
-            int points = Integer.parseInt(request.getParameter("points"));
-            Trainer t = new Trainer(name, pokeballs, potions, points);
-            if(myBean.insertTrainer(t)){
-                out.println("Entrenador dado de alta.");
-            }else{
-                out.println("Error, ya hay un entrenador con ese nombre.");
+            out.println("<h1>Ranking Entrenadores</h1>");
+            List<Trainer> trainers = myBean.selectAllTrainersInOrder();
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<th>Entrenador</th>");
+            out.println("<th>Puntos</th>");
+            out.println("</tr>");
+            for(Trainer t : trainers){
+                out.println("<tr>");
+                out.println("<td>"+t.getName()+"</td>");
+                out.println("<td>"+t.getPoints()+"</td>");
+                out.println("</tr>");
             }
+            out.println("</table>");
             out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Menu Principal\"></form>");
             out.println("</body>");
             out.println("</html>");
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -97,4 +103,5 @@ public class CreateTrainer extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

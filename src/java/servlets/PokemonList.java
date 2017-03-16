@@ -44,11 +44,11 @@ public class PokemonList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PokemonList</title>");            
+            out.println("<title>Listado de Pokemons</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PokemonList at " + request.getContextPath() + "</h1>");
-            List<Pokemon> pokemons = myBean.selectAllPokemons();
+            out.println("<h1>Listado de Pokemons</h1>");
+            List<Pokemon> pokemons = myBean.selectAllPokemonsInOrder();
             out.println("<table>");
             out.println("<tr>");
             out.println("<th>Pokemon</th>");
@@ -58,7 +58,7 @@ public class PokemonList extends HttpServlet {
             for(Pokemon p : pokemons){
                 out.println("<form action=\"DeletePokemon\" method=\"GET\">");
                 out.println("<tr>");
-                out.println("<td>"+p.getName()+", Nivel "+p.getLevel()+"</td>");
+                out.println("<td>"+p.getName()+", Nivel "+p.getLevel()+", Vida: "+p.getLife()+"</td>");
                 out.println("<td>"+p.getTrainer().getName()+"</td>");
                 out.println("<td><input type=\"submit\" value=\"Eliminar\">");
                 out.println("<input type=\"hidden\" name=\"name\" value=\""+p.getName()+"\"></td>");
@@ -66,6 +66,7 @@ public class PokemonList extends HttpServlet {
                 out.println("</form>");
             }
             out.println("</table>");
+            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Menu Principal\"></form>");
             out.println("</body>");
             out.println("</html>");
         }

@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Trainer.findByName", query = "SELECT t FROM Trainer t WHERE t.name = :name")
     , @NamedQuery(name = "Trainer.findByPokeballs", query = "SELECT t FROM Trainer t WHERE t.pokeballs = :pokeballs")
     , @NamedQuery(name = "Trainer.findByPotions", query = "SELECT t FROM Trainer t WHERE t.potions = :potions")
+    , @NamedQuery(name = "Trainer.findByLevelPoints", query = "SELECT t FROM Trainer t ORDER BY t.points DESC")
     , @NamedQuery(name = "Trainer.findByPoints", query = "SELECT t FROM Trainer t WHERE t.points = :points")})
 public class Trainer implements Serializable {
 

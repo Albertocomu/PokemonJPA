@@ -68,6 +68,7 @@ public class CreatePokemon extends HttpServlet {
             out.println("</select>");
             out.println("<input type=\"submit\" value=\"Create\">");
             out.println("</form>");
+            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Cancelar\"></form>");
             out.println("</body>");
             out.println("</html>");
         }

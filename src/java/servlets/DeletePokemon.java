@@ -55,6 +55,7 @@ public class DeletePokemon extends HttpServlet {
                     else{out.println("No pudimos eliminar el pokemon, lo sentimos.");}
                 }else{out.println("No pudimos eliminar el pokemon, lo sentimos.");}
             }
+            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Menu Principal\"></form>");
             out.println("</body>");
             out.println("</html>");
         }

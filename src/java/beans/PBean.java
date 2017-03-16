@@ -28,6 +28,10 @@ public class PBean {
         return emf.createEntityManager().createNamedQuery("Pokemon.findAll").getResultList();
     }
     
+    public List<Pokemon> selectAllPokemonsInOrder(){
+        return emf.createEntityManager().createNamedQuery("Pokemon.findByLevelOrLife").getResultList();
+    }
+    
     public boolean insertPokemon(Pokemon p){
         if(!existsPokemon(p)){
             EntityManager em = emf.createEntityManager();
@@ -58,7 +62,11 @@ public class PBean {
     }
     
     public List<Trainer> selectAllTrainers(){
-        return emf.createEntityManager().createNamedQuery("Pokemon.findAll").getResultList();
+        return emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
+    }
+    
+    public List<Trainer> selectAllTrainersInOrder(){
+        return emf.createEntityManager().createNamedQuery("Trainer.findByLevelPoints").getResultList();
     }
     
     public boolean insertTrainer(Trainer t){

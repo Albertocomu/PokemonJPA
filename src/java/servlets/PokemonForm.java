@@ -44,7 +44,7 @@ public class PokemonForm extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Pokemon</title>");            
+            out.println("<title>Crear Pokemon</title>");            
             out.println("</head>");
             out.println("<body>");
             String name = request.getParameter("name");
@@ -63,6 +63,7 @@ public class PokemonForm extends HttpServlet {
             }else{
                 out.println("Error, ya hay un pokemon con ese nombre.");
             }
+            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Menu Principal\"></form>");
             out.println("</body>");
             out.println("</html>");
         }
