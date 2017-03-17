@@ -7,9 +7,9 @@ package servlets;
 
 import beans.PBean;
 import entities.Pokemon;
-import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author sergiodiaz
+ * @author DAM
  */
-@WebServlet(name = "RevivePokemon", urlPatterns = {"/RevivePokemon"})
-public class RevivePokemon extends HttpServlet {
+@WebServlet(name = "BatallaList", urlPatterns = {"/BatallaList"})
+public class BatallaList extends HttpServlet {
 
     @EJB
     PBean myBean;
@@ -44,22 +44,23 @@ public class RevivePokemon extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Revivir Pokemon</title>");            
+            out.println("<title>Ranking de Batallas</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Curando Pokemon...</h1>");
-            Pokemon p = myBean.obtainPokemon(request.getParameter("pokemon"));
-            Trainer t = myBean.obtainTrainer(p.getTrainer().getName());
-            if(t.getPotions()>0){
-                p.setLife(p.getLife()+50);
-                t.setPotions(t.getPotions()-1);
-                if(myBean.updatePokemonPoints(request.getParameter("pokemon"))){
-                    out.println("Curaste a "+p.getName()+" con 50 puntos.");
-                }
-                if(myBean.updateTrainerPotions(p.getTrainer().getName())){
-                    out.println("Te quedan "+t.getPotions()+" pociones.");
-                }
-            }else{out.println("Lo sentimos, no te quedan pociones.");}
+            out.println("<h1>Ranking de Batallas</h1>");
+            List<Pokemon> pokemons = myBean.selectPokemonsWinners();
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<th>Pokemon</th>");
+            out.println("<th>Batallas ganadas</th>");
+            out.println("</tr>");
+            for(Pokemon p : pokemons){
+                out.println("<tr>");
+                out.println("<td>"+p.getName()+"</td>");
+                out.println("<td>"+p.getLevel()+"</td>");
+                out.println("</tr>");
+            }
+            out.println("</table>");
             out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Menu Principal\"></form>");
             out.println("</body>");
             out.println("</html>");

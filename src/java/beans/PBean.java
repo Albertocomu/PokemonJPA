@@ -37,6 +37,10 @@ public class PBean {
         return emf.createEntityManager().createNamedQuery("Pokemon.findByLevelOrLife").getResultList();
     }
     
+    public List<Pokemon> selectPokemonsWinners(){
+        return emf.createEntityManager().createNamedQuery("Pokemon.findByWinners").getResultList();
+    }
+    
     public boolean insertPokemon(Pokemon p){
         if(!existsPokemon(p)){
             EntityManager em = emf.createEntityManager();
@@ -119,5 +123,31 @@ public class PBean {
             }
         }
         return validTrainers;
+    }
+    
+    public boolean updateTrainerPotions(String nombre) {
+        EntityManager em = emf.createEntityManager();
+        Trainer t = em.find(Trainer.class, nombre);
+        boolean ok = false;
+        if (t != null) {
+            t.setPotions(t.getPotions()-1);
+            em.persist(t);
+            ok = true;
+        }
+        em.close();
+        return ok;
+    }
+    
+    public boolean updatePokemonPoints(String nombre) {
+        EntityManager em = emf.createEntityManager();
+        Pokemon p = em.find(Pokemon.class, nombre);
+        boolean ok = false;
+        if (p != null) {
+            p.setLife(p.getLife()+50);
+            em.persist(p);
+            ok = true;
+        }
+        em.close();
+        return ok;
     }
 }
