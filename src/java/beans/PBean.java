@@ -125,6 +125,17 @@ public class PBean {
         return validTrainers;
     }
     
+    public List<Trainer> selectTrainersWithPoints(){
+        List<Trainer> trainers = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
+        List<Trainer> validTrainers = new ArrayList<>();
+        for(Trainer t : trainers){
+            if(t.getPoints()>9){
+                validTrainers.add(t);
+            }
+        }
+        return validTrainers;
+    }
+    
     public boolean updateTrainerPotions(String nombre) {
         EntityManager em = emf.createEntityManager();
         Trainer t = em.find(Trainer.class, nombre);

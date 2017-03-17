@@ -5,13 +5,8 @@
  */
 package servlets;
 
-import beans.PBean;
-import entities.Pokemon;
-import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,15 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author sergiodiaz
+ * @author DAM
  */
-@WebServlet(name = "ReviveSelected", urlPatterns = {"/ReviveSelected"})
-public class ReviveSelected extends HttpServlet {
+@WebServlet(name = "TrainerSelected", urlPatterns = {"/TrainerSelected"})
+public class TrainerSelected extends HttpServlet {
 
-    
-    @EJB
-    PBean myBean;
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,23 +37,13 @@ public class ReviveSelected extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Revivir Pokemon</title>");            
+            out.println("<title>Conseguir Pociones</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Selecciona el pokemon para curarlo.</h1>");
-            List<Pokemon> tPokemons = myBean.selectAllPokemonsOfTrainer(request.getParameter("trainer"));
-            out.println("<form action=\"RevivePokemon\" method=\"GET\">");
-            out.println("Pokemons: <select name=\"pokemon\">");
-            try{
-                
-                for(Pokemon p : tPokemons){
-                    out.println("<option value="+p.getName()+">"+p.getName()+"</option>");
-                }
-            }catch(Exception error){
-                error.printStackTrace();
-            }
-            out.println("</select>");
-            out.println("<input type=\"submit\" value=\"Curar Pokemon\">");
+            out.println("<h1>Introducir numero de pociones</h1>");
+            out.println("<form action=\"ObtainPotion\" method=\"GET\">");
+            out.println("Numero de pociones: <input type=\"number\" name=\"potions\" required>");
+            out.println("<input type=\"submit\" value=\"Obtener pociones\">");
             out.println("</form>");
             out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Cancelar\"></form>");
             out.println("</body>");

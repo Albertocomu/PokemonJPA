@@ -6,7 +6,6 @@
 package servlets;
 
 import beans.PBean;
-import entities.Pokemon;
 import entities.Trainer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,12 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author sergiodiaz
+ * @author DAM
  */
-@WebServlet(name = "ReviveSelected", urlPatterns = {"/ReviveSelected"})
-public class ReviveSelected extends HttpServlet {
+@WebServlet(name = "SelectTrainerPotions", urlPatterns = {"/SelectTrainerPotions"})
+public class SelectTrainerPotions extends HttpServlet {
 
-    
     @EJB
     PBean myBean;
     
@@ -46,23 +44,22 @@ public class ReviveSelected extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Revivir Pokemon</title>");            
+            out.println("<title>Conseguir Pociones</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Selecciona el pokemon para curarlo.</h1>");
-            List<Pokemon> tPokemons = myBean.selectAllPokemonsOfTrainer(request.getParameter("trainer"));
-            out.println("<form action=\"RevivePokemon\" method=\"GET\">");
-            out.println("Pokemons: <select name=\"pokemon\">");
+            out.println("<h1>Elegir Entrenador...</h1>");
+            out.println("<form action=\"TrainerSelected\" method=\"GET\">");
+            out.println("Entrenador: <select name=\"trainer\">");
             try{
-                
-                for(Pokemon p : tPokemons){
-                    out.println("<option value="+p.getName()+">"+p.getName()+"</option>");
+                List<Trainer> trainers = myBean.selectTrainersWithPoints();
+                for(Trainer t : trainers){
+                    out.println("<option value="+t.getName()+">"+t.getName()+"</option>");
                 }
             }catch(Exception error){
                 error.printStackTrace();
             }
             out.println("</select>");
-            out.println("<input type=\"submit\" value=\"Curar Pokemon\">");
+            out.println("<input type=\"submit\" value=\"Seleccionar Entrenador\">");
             out.println("</form>");
             out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Cancelar\"></form>");
             out.println("</body>");
